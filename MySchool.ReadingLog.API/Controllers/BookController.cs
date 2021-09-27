@@ -11,7 +11,7 @@ namespace MySchool.ReadingLog.API.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {    
-        private IBooksService booksService;
+        private readonly IBooksService booksService;
 
         public BookController(IBooksService booksService)
         {

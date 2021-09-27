@@ -6,7 +6,7 @@ namespace MySchool.ReadingLog.Services
 {
     public class StudentService : IStudentService
     {
-        private IStudentRepository studentRepository;
+        private readonly IStudentRepository studentRepository;
 
         public StudentService(IStudentRepository studentRepository)
         {
@@ -31,6 +31,16 @@ namespace MySchool.ReadingLog.Services
         public List<BookRead> GetBookRead(int studentId)
         {
             return null;
+        }
+
+        public Student GetStudent(int studentId)
+        {
+            return studentRepository.GetStudent(studentId);
+        }
+
+        public void Update(Student student)
+        {
+            studentRepository.Update(student);
         }
     }
 }

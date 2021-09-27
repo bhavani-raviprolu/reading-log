@@ -10,7 +10,7 @@ namespace MySchool.ReadingLog.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
-        private IStudentService studentService;
+        private readonly IStudentService studentService;
 
         public StudentController(IStudentService studentService)
         {
@@ -31,6 +31,20 @@ namespace MySchool.ReadingLog.API.Controllers
         {
             List<Student> students = studentService.GetStudents();
             return Ok(students);
+        }
+
+        [HttpGet("GetStudent")]
+        public IActionResult GetStudent(int studentId)
+        {
+            var student = studentService.GetStudent(studentId);
+            return Ok(student);
+        }
+
+        [HttpPut("Update")]
+        public IActionResult Update(Student student)
+        {
+            studentService.Update(student);
+            return Ok();
         }
     }
 }

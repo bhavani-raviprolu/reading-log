@@ -12,5 +12,9 @@ namespace MySchool.ReadingLog.Services
         List<BookRead> GetBookRead(int studentId);
 
         List<Student> GetStudents();
+
+        Student GetStudent(int studentId);
+
+        void Update(Student student);
     }
 }

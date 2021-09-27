@@ -9,7 +9,7 @@ namespace MySchool.ReadingLog.API.Controllers
     [ApiController]
     public class BookReadController : ControllerBase
     {
-        private IStudentService studentService;
+        private readonly IStudentService studentService;
 
         public BookReadController(IStudentService studentService)
         {
