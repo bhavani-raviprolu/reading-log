@@ -7,11 +7,13 @@ namespace MySchool.ReadingLog.DataAccess
 {
     public class StudentRepository : IStudentRepository
     {
-        private ReadingLogDbContext readingLogDbContext;
+        private readonly ReadingLogDbContext readingLogDbContext;
+        private readonly ReadingLogDbContext readingLogDbContext1;
 
-        public StudentRepository(ReadingLogDbContext context)
+        public StudentRepository(ReadingLogDbContext context,ReadingLogDbContext context1)
         {
             readingLogDbContext = context;
+            readingLogDbContext1 = context1;
         }
 
         public void AddStudent(Student student)
@@ -37,9 +39,25 @@ namespace MySchool.ReadingLog.DataAccess
             readingLogDbContext.SaveChanges();
         }
 
+        public Student GetStudent(int studentId)
+        {
+            return readingLogDbContext.Students.First(x => x.Id == studentId);
+        }
+
         public List<BookRead> GetBookRead(int studentId)
         {
             return null;
+        }
+
+        public void Update(Student student)
+        {
+            var current = readingLogDbContext.Students.Find(student.Id);
+            readingLogDbContext1.Entry(current).CurrentValues.SetValues(student);
+            var changeState = readingLogDbContext1.ChangeTracker.DebugView.LongView;
+
+           
+            readingLogDbContext1.SaveChanges();
+            
         }
     }
 }

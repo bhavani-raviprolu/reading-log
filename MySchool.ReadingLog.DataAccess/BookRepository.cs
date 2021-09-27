@@ -6,7 +6,7 @@ namespace MySchool.ReadingLog.DataAccess
 {
     public class BookRepository : IBookRepository
     {
-        private ReadingLogDbContext readingLogDbContext;
+        private readonly ReadingLogDbContext readingLogDbContext;
 
         public BookRepository(ReadingLogDbContext readingLogDbContext)
         {

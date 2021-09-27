@@ -6,7 +6,7 @@ namespace MySchool.ReadingLog.Services
 {
     public class BooksService : IBooksService
     {
-        private IBookRepository bookRepository;
+        private readonly IBookRepository bookRepository;
 
         public BooksService(IBookRepository bookRepository)
         {
