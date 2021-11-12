@@ -23,5 +23,10 @@ namespace MySchool.ReadingLog.DataAccess
         {
             return readingLogDbContext.Books.ToList();
         }
+
+        public Book GetBook(int bookId)
+        {
+          return readingLogDbContext.Books.First(x=>x.Id == bookId);
+        }
     }
 }

@@ -22,5 +22,10 @@ namespace MySchool.ReadingLog.Services
         {
             return bookRepository.GetBooks();
         }
+
+        public Book GetBook(int bookId)
+        {
+            return bookRepository.GetBook(bookId);
+        }
     }
 }

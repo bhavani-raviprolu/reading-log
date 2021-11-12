@@ -16,13 +16,6 @@ namespace MySchool.ReadingLog.API.Controllers
             this.studentService = studentService;
         }
 
-        [HttpPost("AddBookRead")]
-        public void AddBookRead([FromBody] BookRead bookRead)
-        {
-            bookRead.DateRead = DateTime.Now;
-            bookRead.CreatedBy = "Kalyan";
-            bookRead.CreatedDate = DateTime.Now;
-            studentService.AddBookRead(bookRead);
-        }
+     
     }
 }

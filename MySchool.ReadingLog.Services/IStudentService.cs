@@ -5,7 +5,7 @@ namespace MySchool.ReadingLog.Services
 {
     public interface IStudentService
     {
-        void AddBookRead(BookRead bookRead);
+        void AddBookRead(int studentId,BookRead bookRead);
 
         void AddStudent(Student student);
 

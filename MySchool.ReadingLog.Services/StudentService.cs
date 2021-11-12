@@ -23,9 +23,9 @@ namespace MySchool.ReadingLog.Services
             return studentRepository.GetStudents();
         }
 
-        public void AddBookRead(BookRead bookRead)
+        public void AddBookRead(int studentId,BookRead bookRead)
         {
-            studentRepository.AddBookRead(bookRead);
+            studentRepository.AddBookRead(studentId,bookRead);
         }
 
         public List<BookRead> GetBookRead(int studentId)

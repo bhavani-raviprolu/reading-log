@@ -5,7 +5,7 @@ namespace MySchool.ReadingLog.DataAccess
 {
     public interface IStudentRepository
     {
-        void AddBookRead(BookRead bookRead);
+        void AddBookRead(int studentId,BookRead bookRead);
 
         void AddStudent(Student student);
 

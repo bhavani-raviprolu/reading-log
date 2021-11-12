@@ -24,12 +24,12 @@ namespace MySchool.ReadingLog.DataAccess
 
         public List<Student> GetStudents()
         {
-            return readingLogDbContext.Students.Include(x => x.BooksRead).ToList();
+            return readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x=>x.Book).ToList();
         }
 
-        public void AddBookRead(BookRead bookRead)
+        public void AddBookRead(int studentId,BookRead bookRead)
         {
-            var student = readingLogDbContext.Students.Find(bookRead.StudentId);
+            var student = readingLogDbContext.Students.Find(studentId);
             if (student.BooksRead == null)
             {
                 student.BooksRead = new List<BookRead>();
@@ -41,7 +41,7 @@ namespace MySchool.ReadingLog.DataAccess
 
         public Student GetStudent(int studentId)
         {
-            return readingLogDbContext.Students.First(x => x.Id == studentId);
+            return readingLogDbContext.Students.Include(x=>x.BooksRead).ThenInclude(x=>x.Book).First(x => x.Id == studentId);
         }
 
         public List<BookRead> GetBookRead(int studentId)
@@ -53,7 +53,7 @@ namespace MySchool.ReadingLog.DataAccess
         {
             var current = readingLogDbContext.Students.Find(student.Id);
             readingLogDbContext1.Entry(current).CurrentValues.SetValues(student);
-            var changeState = readingLogDbContext1.ChangeTracker.DebugView.LongView;
+           // var changeState = readingLogDbContext1.ChangeTracker.DebugView.LongView;
 
            
             readingLogDbContext1.SaveChanges();

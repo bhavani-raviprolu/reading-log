@@ -8,5 +8,7 @@ namespace MySchool.ReadingLog.Services
         void AddBook(Book book);
 
         List<Book> GetBooks();
+
+        Book GetBook(int bookId);
     }
 }
