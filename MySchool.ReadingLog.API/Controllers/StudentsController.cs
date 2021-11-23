@@ -4,6 +4,7 @@ using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services;
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
@@ -13,39 +14,34 @@ namespace MySchool.ReadingLog.API.Controllers
     {
         private readonly IStudentService studentService;
 
-        public StudentsController(IStudentService studentService)
+        private readonly IMapper _mapper;
+
+        public StudentsController(IStudentService studentService,IMapper mapper)
         {
             this.studentService = studentService;
+            this._mapper = mapper;
         }
 
         [HttpPost]
-        public void AddStudent(Student student)
+        [RoleAuthorize]
+        public IActionResult AddStudent(StudentModel studentModel)
         {
+            var student = _mapper.Map<Student>(studentModel);
+
             student.CreatedBy = "Bhavani";
             student.CreatedDate = DateTime.Now;
             student.ModifiedDate = DateTime.Now;
             studentService.AddStudent(student);
+            return Ok();
         }
 
         [HttpGet]
+        
         public IActionResult GetStudents()
         {
-            List<Student> students = studentService.GetStudents();
-
-            List<StudentModel> studentsModel = new List<StudentModel>();
-            foreach (var student in students)
-            {
-                StudentModel studentModel = new StudentModel();
-                studentModel.StudentName = student.StudentName;
-                studentModel.Grade = student.Grade;
-               
-                studentModel.BooksReadModel = new List<BookReadModel>();
-                foreach(var bookRead in student.BooksRead)
-                {
-                    studentModel.BooksReadModel.Add(new BookReadModel { BookId = bookRead.BookId, DateRead = bookRead.DateRead,BookName=bookRead.Book.BookName });
-                }
-                studentsModel.Add(studentModel);
-            }
+            var students = studentService.GetStudents();
+            var studentsModel =_mapper.Map<List<StudentModel>>(students);
+          
             return Ok(studentsModel);
         }
 
@@ -55,37 +51,46 @@ namespace MySchool.ReadingLog.API.Controllers
         {
             var student = studentService.GetStudent(studentId);
 
-            StudentModel studentModel = new StudentModel();
-            studentModel.StudentName = student.StudentName;
-            studentModel.Grade = student.Grade;
-            studentModel.BooksReadModel  = new List<BookReadModel>();
-            foreach(var bookRead in student.BooksRead)
-            {
-                
-                studentModel.BooksReadModel.Add(new BookReadModel { BookId= bookRead.BookId, DateRead=bookRead.DateRead ,BookName=bookRead.Book.BookName});
-            }
+            var studentModel = _mapper.Map<StudentModel>(student);
 
             return Ok(studentModel);
         }
 
         [HttpPut]
-        public IActionResult Update(Student student)
+        [RoleAuthorize]
+        public IActionResult UpdateStudent(int studentId, Student student)
         {
-            studentService.Update(student);
+            studentService.UpdateStudent(studentId, student);
             return Ok();
         }
 
         [HttpPost]
         [Route("{studentId}/BooksRead")]
+       
         public IActionResult AddBookRead(int studentId, BookReadModel bookReadModel)
         {
+            
+            
+                BookRead bookRead = new BookRead
+                {
+                    BookId = bookReadModel.BookId,
+                    DateRead = bookReadModel.DateRead,
+                    CreatedBy = "Kalyan",
+                    CreatedDate = DateTime.Now
+                };
+                studentService.AddBookRead(studentId, bookRead);
+               
+                return Ok();
 
-            BookRead bookRead = new BookRead();
-            bookRead.BookId = bookReadModel.BookId;
-            bookRead.DateRead = bookReadModel.DateRead;
-            bookRead.CreatedBy = "Kalyan";
-            bookRead.CreatedDate = DateTime.Now;
-            studentService.AddBookRead(studentId,bookRead);
+
+        }
+
+        [HttpDelete]
+        [Route("{studentId}")]
+        [RoleAuthorize]
+        public IActionResult DeleteStudent(int studentId)
+        {
+            studentService.DeleteStudent(studentId);
             return Ok();
         }
     }

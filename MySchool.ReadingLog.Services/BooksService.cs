@@ -27,5 +27,13 @@ namespace MySchool.ReadingLog.Services
         {
             return bookRepository.GetBook(bookId);
         }
+        public void UpdateBook(int bookId,Book book)
+        {
+             bookRepository.UpdateBook(bookId,book);
+        }
+        public void DeleteBook(int bookId)
+        {
+            bookRepository.DeleteBook(bookId);
+        }
     }
 }

@@ -10,5 +10,8 @@ namespace MySchool.ReadingLog.Services
         List<Book> GetBooks();
 
         Book GetBook(int bookId);
+
+        void UpdateBook(int bookId, Book book);
+        void DeleteBook(int bookId);
     }
 }

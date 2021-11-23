@@ -6,6 +6,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MySchool.ReadingLog.DataAccess;
 using MySchool.ReadingLog.Services;
+using AutoMapper;
+using MySchool.ReadingLog.Domain;
+using MySchool.ReadingLog.API.Models;
+using MySchool.ReadingLog.API.Mapping;
 
 namespace MySchool.ReadingLog.API
 {
@@ -28,11 +32,14 @@ namespace MySchool.ReadingLog.API
             services.AddScoped<IStudentRepository, StudentRepository>();
             services.AddScoped<IBooksService, BooksService>();
             services.AddScoped<IBookRepository, BookRepository>();
+
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

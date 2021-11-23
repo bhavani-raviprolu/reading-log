@@ -38,9 +38,13 @@ namespace MySchool.ReadingLog.Services
             return studentRepository.GetStudent(studentId);
         }
 
-        public void Update(Student student)
+        public void UpdateStudent(int studentId,Student student)
         {
-            studentRepository.Update(student);
+            studentRepository.UpdateStudent(studentId,student);
+        }
+        public void DeleteStudent(int studentId)
+        {
+            studentRepository.DeleteStudent(studentId);
         }
     }
 }

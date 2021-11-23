@@ -7,6 +7,7 @@ namespace MySchool.ReadingLog.DataAccess
     public class BookRepository : IBookRepository
     {
         private readonly ReadingLogDbContext readingLogDbContext;
+       
 
         public BookRepository(ReadingLogDbContext readingLogDbContext)
         {
@@ -27,6 +28,20 @@ namespace MySchool.ReadingLog.DataAccess
         public Book GetBook(int bookId)
         {
           return readingLogDbContext.Books.First(x=>x.Id == bookId);
+        }
+
+        public void UpdateBook(int bookId, Book  book)
+        {
+            var current = readingLogDbContext.Books.Find(book.Id);
+            current.BookName = book.BookName;
+            readingLogDbContext.SaveChanges();         
+        }
+
+        public void DeleteBook(int bookId)
+        {
+            var current = readingLogDbContext.Books.Find(bookId);
+            readingLogDbContext.Books.Remove(current);
+            readingLogDbContext.SaveChanges();
         }
     }
 }

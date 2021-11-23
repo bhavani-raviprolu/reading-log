@@ -49,15 +49,19 @@ namespace MySchool.ReadingLog.DataAccess
             return null;
         }
 
-        public void Update(Student student)
+        public void UpdateStudent(int studentId,Student student)
         {
             var current = readingLogDbContext.Students.Find(student.Id);
             readingLogDbContext1.Entry(current).CurrentValues.SetValues(student);
-           // var changeState = readingLogDbContext1.ChangeTracker.DebugView.LongView;
-
-           
+                   
             readingLogDbContext1.SaveChanges();
             
+        }
+        public void DeleteStudent(int studentId)
+        {
+            var current=readingLogDbContext.Students.Find(studentId);
+            readingLogDbContext.Students.Remove(current);
+            readingLogDbContext.SaveChanges();
         }
     }
 }

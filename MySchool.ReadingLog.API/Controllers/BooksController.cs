@@ -5,6 +5,8 @@ using MySchool.ReadingLog.Services;
 using System;
 using System.Collections.Generic;
 using MySchool.ReadingLog.API.Models;
+using AutoMapper;
+using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
@@ -14,49 +16,68 @@ namespace MySchool.ReadingLog.API.Controllers
     {    
         private readonly IBooksService booksService;
 
-        public BooksController(IBooksService booksService)
+        private readonly IMapper _mapper;
+        
+       
+
+        public BooksController(IBooksService booksService,IMapper mapper)
         {
             this.booksService = booksService;
+            this._mapper = mapper;
         }
 
         [HttpPost]
-        public void AddBook(Book book)
+        [RoleAuthorize]
+        public void AddBook(BookModel bookModel)
         {
+            
+            var book = _mapper.Map<Book>(bookModel);
             book.CreatedBy = "Kalyan";
             book.CreatedDate = System.DateTime.Now;
             book.ModifiedBy = "Kalyan";
             book.ModifiedDate = System.DateTime.Now;
+
+
             booksService.AddBook(book);
         }
-
+       
         [HttpGet]
         public IActionResult GetBooks()
         {
-            List<Book> books = booksService.GetBooks();
-            List<BookModel> bookModels = new List<BookModel>();
-            foreach (var book in books)
-            {
-
-                BookModel bookModel = new BookModel();
-                bookModel.Id=book.Id;
-                bookModel.BookName = book.BookName;
-                bookModel.CreatedBy = book.CreatedBy;
-                bookModel.CreatedDate = book.CreatedDate;
-                bookModel.ModifiedBy = book.ModifiedBy;
-                bookModel.ModifiedDate = book.ModifiedDate;
-                bookModels.Add(bookModel);
-
-            }
+            var books = booksService.GetBooks();
+            var bookModels = _mapper.Map<List<BookModel>>(books);
+                     
                                    
             return Ok(bookModels);
         }
-
+       
         [HttpGet]
         [Route("{bookId}")]
         public IActionResult GetBook(int bookId)
         {
-            Book book = booksService.GetBook(bookId);
-            return Ok(book);
+
+            var book = booksService.GetBook(bookId);
+            var bookModel = _mapper.Map<BookModel>(book);
+            
+
+            return Ok(bookModel);
         }
+        [HttpPut]
+        [Route("{bookId}")]
+        [RoleAuthorize]
+        public IActionResult UpdateBook(int bookId,Book book)
+        {
+            booksService.UpdateBook(bookId,book);
+            return Ok();
+        }
+        [HttpDelete]
+        [Route("{bookId}")]
+        [RoleAuthorize]
+        public IActionResult DeleteBook(int bookId)
+        {
+            booksService.DeleteBook(bookId);
+            return Ok();
+        }
+
     }
 }

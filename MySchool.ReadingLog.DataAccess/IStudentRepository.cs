@@ -15,6 +15,7 @@ namespace MySchool.ReadingLog.DataAccess
 
         Student GetStudent(int studentId);
 
-        void Update(Student student);
+        void UpdateStudent(int studentId, Student  student);
+        void DeleteStudent(int studentId);
     }
 }
