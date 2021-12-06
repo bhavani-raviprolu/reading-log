@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using MySchool.ReadingLog.Domain;
+﻿using AutoMapper;
 using MySchool.ReadingLog.API.Models;
-using System.Linq.Expressions;
+using MySchool.ReadingLog.Domain;
 
 namespace MySchool.ReadingLog.API.Mapping
 {
@@ -15,9 +10,9 @@ namespace MySchool.ReadingLog.API.Mapping
         {
             CreateMap<Book, BookModel>().ReverseMap();
             CreateMap<Student, StudentModel>().ReverseMap();
-            CreateMap<BookRead, BookReadModel>().ForMember(dest => dest.BookName, opt => opt.MapFrom(src=>src.Book.BookName)).ReverseMap(); ;
+            CreateMap<BookRead, BookReadModel>().ForMember(dest => dest.BookName, opt => opt.MapFrom(src => src.Book.BookName)).ReverseMap(); ;
+            CreateMap<User, UserModel>().ReverseMap();
+            CreateMap<AddUserModel, User>();
         }
-
-        
     }
 }

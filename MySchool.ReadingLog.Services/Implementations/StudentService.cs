@@ -1,8 +1,9 @@
-﻿using MySchool.ReadingLog.DataAccess;
+﻿using MySchool.ReadingLog.DataAccess.Interfaces;
 using MySchool.ReadingLog.Domain;
+using MySchool.ReadingLog.Services.Interfaces;
 using System.Collections.Generic;
 
-namespace MySchool.ReadingLog.Services
+namespace MySchool.ReadingLog.Services.Implementations
 {
     public class StudentService : IStudentService
     {
@@ -23,9 +24,9 @@ namespace MySchool.ReadingLog.Services
             return studentRepository.GetStudents();
         }
 
-        public void AddBookRead(int studentId,BookRead bookRead)
+        public void AddBookRead(int studentId, BookRead bookRead)
         {
-            studentRepository.AddBookRead(studentId,bookRead);
+            studentRepository.AddBookRead(studentId, bookRead);
         }
 
         public List<BookRead> GetBookRead(int studentId)
@@ -38,9 +39,9 @@ namespace MySchool.ReadingLog.Services
             return studentRepository.GetStudent(studentId);
         }
 
-        public void UpdateStudent(int studentId,Student student)
+        public void UpdateStudent(int studentId, Student student)
         {
-            studentRepository.UpdateStudent(studentId,student);
+            studentRepository.UpdateStudent(studentId, student);
         }
         public void DeleteStudent(int studentId)
         {

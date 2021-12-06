@@ -1,19 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MySchool.ReadingLog.DataAccess.Interfaces;
 using MySchool.ReadingLog.Domain;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MySchool.ReadingLog.DataAccess
+namespace MySchool.ReadingLog.DataAccess.Implementations
 {
     public class StudentRepository : IStudentRepository
     {
         private readonly ReadingLogDbContext readingLogDbContext;
-        private readonly ReadingLogDbContext readingLogDbContext1;
 
-        public StudentRepository(ReadingLogDbContext context,ReadingLogDbContext context1)
+        public StudentRepository(ReadingLogDbContext context)
         {
             readingLogDbContext = context;
-            readingLogDbContext1 = context1;
         }
 
         public void AddStudent(Student student)
@@ -24,10 +23,10 @@ namespace MySchool.ReadingLog.DataAccess
 
         public List<Student> GetStudents()
         {
-            return readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x=>x.Book).ToList();
+            return readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x => x.Book).ToList();
         }
 
-        public void AddBookRead(int studentId,BookRead bookRead)
+        public void AddBookRead(int studentId, BookRead bookRead)
         {
             var student = readingLogDbContext.Students.Find(studentId);
             if (student.BooksRead == null)
@@ -41,7 +40,7 @@ namespace MySchool.ReadingLog.DataAccess
 
         public Student GetStudent(int studentId)
         {
-            return readingLogDbContext.Students.Include(x=>x.BooksRead).ThenInclude(x=>x.Book).First(x => x.Id == studentId);
+            return readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x => x.Book).First(x => x.Id == studentId);
         }
 
         public List<BookRead> GetBookRead(int studentId)
@@ -49,17 +48,16 @@ namespace MySchool.ReadingLog.DataAccess
             return null;
         }
 
-        public void UpdateStudent(int studentId,Student student)
+        public void UpdateStudent(int studentId, Student student)
         {
             var current = readingLogDbContext.Students.Find(student.Id);
-            readingLogDbContext1.Entry(current).CurrentValues.SetValues(student);
-                   
-            readingLogDbContext1.SaveChanges();
-            
+
+            readingLogDbContext.SaveChanges();
         }
+
         public void DeleteStudent(int studentId)
         {
-            var current=readingLogDbContext.Students.Find(studentId);
+            var current = readingLogDbContext.Students.Find(studentId);
             readingLogDbContext.Students.Remove(current);
             readingLogDbContext.SaveChanges();
         }

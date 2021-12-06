@@ -1,13 +1,14 @@
-﻿using MySchool.ReadingLog.Domain;
+﻿using MySchool.ReadingLog.DataAccess.Interfaces;
+using MySchool.ReadingLog.Domain;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MySchool.ReadingLog.DataAccess
+namespace MySchool.ReadingLog.DataAccess.Implementations
 {
     public class BookRepository : IBookRepository
     {
         private readonly ReadingLogDbContext readingLogDbContext;
-       
+
 
         public BookRepository(ReadingLogDbContext readingLogDbContext)
         {
@@ -27,14 +28,14 @@ namespace MySchool.ReadingLog.DataAccess
 
         public Book GetBook(int bookId)
         {
-          return readingLogDbContext.Books.First(x=>x.Id == bookId);
+            return readingLogDbContext.Books.First(x => x.Id == bookId);
         }
 
-        public void UpdateBook(int bookId, Book  book)
+        public void UpdateBook(int bookId, Book book)
         {
             var current = readingLogDbContext.Books.Find(book.Id);
             current.BookName = book.BookName;
-            readingLogDbContext.SaveChanges();         
+            readingLogDbContext.SaveChanges();
         }
 
         public void DeleteBook(int bookId)

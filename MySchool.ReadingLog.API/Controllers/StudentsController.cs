@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySchool.ReadingLog.API.Infrastructure;
 using MySchool.ReadingLog.API.Models;
 using MySchool.ReadingLog.Domain;
-using MySchool.ReadingLog.Services;
+using MySchool.ReadingLog.Services.Interfaces;
 using System.Collections.Generic;
 
 namespace MySchool.ReadingLog.API.Controllers
@@ -21,7 +21,7 @@ namespace MySchool.ReadingLog.API.Controllers
         }
 
         [HttpPost]
-        [RoleAuthorize]
+        [RoleAuthorize(Role.Admin)]
         public IActionResult AddStudent(StudentModel studentModel)
         {
             var student = _mapper.Map<Student>(studentModel);
@@ -41,6 +41,7 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpGet]
         [Route("{studentId}")]
+        [RoleAuthorize(Role.Admin | Role.Parent)]
         public IActionResult GetStudent(int studentId)
         {
             var student = studentService.GetStudent(studentId);
@@ -51,7 +52,7 @@ namespace MySchool.ReadingLog.API.Controllers
         }
 
         [HttpPut]
-        [RoleAuthorize]
+        [RoleAuthorize(Role.Admin)]
         public IActionResult UpdateStudent(int studentId, Student student)
         {
             studentService.UpdateStudent(studentId, student);
@@ -60,6 +61,7 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpPost]
         [Route("{studentId}/BooksRead")]
+        [RoleAuthorize(Role.Parent)]
         public IActionResult AddBookRead(int studentId, BookReadModel bookReadModel)
         {
             BookRead bookRead = new BookRead
@@ -74,7 +76,7 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpDelete]
         [Route("{studentId}")]
-        [RoleAuthorize]
+        [RoleAuthorize(Role.Admin)]
         public IActionResult DeleteStudent(int studentId)
         {
             studentService.DeleteStudent(studentId);

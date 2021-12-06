@@ -1,9 +1,9 @@
 ﻿using MySchool.ReadingLog.Domain;
 using System.Collections.Generic;
 
-namespace MySchool.ReadingLog.Services
+namespace MySchool.ReadingLog.DataAccess.Interfaces
 {
-    public interface IBooksService
+    public interface IBookRepository
     {
         void AddBook(Book book);
 

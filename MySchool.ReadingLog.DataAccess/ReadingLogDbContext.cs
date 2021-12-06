@@ -18,6 +18,8 @@ namespace MySchool.ReadingLog.DataAccess
         public DbSet<Book> Books { get; set; }
         public DbSet<BookRead> BooksRead { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Student>(entity =>

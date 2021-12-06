@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySchool.ReadingLog.API.Infrastructure;
 using MySchool.ReadingLog.API.Models;
 using MySchool.ReadingLog.Domain;
-using MySchool.ReadingLog.Services;
+using MySchool.ReadingLog.Services.Interfaces;
 using System.Collections.Generic;
 
 namespace MySchool.ReadingLog.API.Controllers
@@ -22,7 +21,7 @@ namespace MySchool.ReadingLog.API.Controllers
         }
 
         [HttpPost]
-        [RoleAuthorize]
+        [RoleAuthorize(Role.Admin)]
         public void AddBook(BookModel bookModel)
         {
             var book = _mapper.Map<Book>(bookModel);
@@ -30,7 +29,6 @@ namespace MySchool.ReadingLog.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult GetBooks()
         {
             var books = booksService.GetBooks();
@@ -51,7 +49,7 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpPut]
         [Route("{bookId}")]
-        [RoleAuthorize]
+        [RoleAuthorize(Role.Admin)]
         public IActionResult UpdateBook(int bookId, Book book)
         {
             booksService.UpdateBook(bookId, book);
@@ -60,7 +58,7 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpDelete]
         [Route("{bookId}")]
-        [RoleAuthorize]
+        [RoleAuthorize(Role.Admin)]
         public IActionResult DeleteBook(int bookId)
         {
             booksService.DeleteBook(bookId);

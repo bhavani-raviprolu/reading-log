@@ -1,11 +1,11 @@
 ﻿using MySchool.ReadingLog.Domain;
 using System.Collections.Generic;
 
-namespace MySchool.ReadingLog.DataAccess
+namespace MySchool.ReadingLog.Services.Interfaces
 {
-    public interface IStudentRepository
+    public interface IStudentService
     {
-        void AddBookRead(int studentId,BookRead bookRead);
+        void AddBookRead(int studentId, BookRead bookRead);
 
         void AddStudent(Student student);
 
@@ -15,7 +15,7 @@ namespace MySchool.ReadingLog.DataAccess
 
         Student GetStudent(int studentId);
 
-        void UpdateStudent(int studentId, Student  student);
+        void UpdateStudent(int studentId, Student student);
         void DeleteStudent(int studentId);
     }
 }
