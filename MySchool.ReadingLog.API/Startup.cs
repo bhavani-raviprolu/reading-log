@@ -1,15 +1,14 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySchool.ReadingLog.API.Mapping;
 using MySchool.ReadingLog.DataAccess;
 using MySchool.ReadingLog.Services;
-using AutoMapper;
-using MySchool.ReadingLog.Domain;
-using MySchool.ReadingLog.API.Models;
-using MySchool.ReadingLog.API.Mapping;
 
 namespace MySchool.ReadingLog.API
 {
@@ -25,8 +24,24 @@ namespace MySchool.ReadingLog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.AddIdentity<IdentityUser, IdentityRole>();
             services.AddControllers()
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddCookie()
+            .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
+            {
+                var section = Configuration.GetSection("Authentication:Google");
+                options.ClientId = section["ClientId"];
+                options.ClientSecret = section["ClientSecret"];
+                options.CallbackPath = "/api/login/signin-google";
+            });
+
             services.AddDbContext<ReadingLogDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IStudentRepository, StudentRepository>();
@@ -39,13 +54,14 @@ namespace MySchool.ReadingLog.API
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
