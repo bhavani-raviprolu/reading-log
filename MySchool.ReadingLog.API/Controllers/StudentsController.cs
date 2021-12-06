@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using MySchool.ReadingLog.API.Infrastructure;
 using MySchool.ReadingLog.API.Models;
 using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services;
