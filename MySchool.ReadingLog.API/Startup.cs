@@ -42,6 +42,7 @@ namespace MySchool.ReadingLog.API
                 options.CallbackPath = "/api/login/signin-google";
             });
 
+            services.AddHttpContextAccessor();
             services.AddDbContext<ReadingLogDbContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IStudentService, StudentService>();
             services.AddScoped<IStudentRepository, StudentRepository>();

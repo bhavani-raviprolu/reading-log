@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using MySchool.ReadingLog.API.Models;
 using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services;
-using System;
 using System.Collections.Generic;
-using AutoMapper;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
@@ -16,7 +15,7 @@ namespace MySchool.ReadingLog.API.Controllers
 
         private readonly IMapper _mapper;
 
-        public StudentsController(IStudentService studentService,IMapper mapper)
+        public StudentsController(IStudentService studentService, IMapper mapper)
         {
             this.studentService = studentService;
             this._mapper = mapper;
@@ -28,20 +27,16 @@ namespace MySchool.ReadingLog.API.Controllers
         {
             var student = _mapper.Map<Student>(studentModel);
 
-            student.CreatedBy = "Bhavani";
-            student.CreatedDate = DateTime.Now;
-            student.ModifiedDate = DateTime.Now;
             studentService.AddStudent(student);
             return Ok();
         }
 
         [HttpGet]
-        
         public IActionResult GetStudents()
         {
             var students = studentService.GetStudents();
-            var studentsModel =_mapper.Map<List<StudentModel>>(students);
-          
+            var studentsModel = _mapper.Map<List<StudentModel>>(students);
+
             return Ok(studentsModel);
         }
 
@@ -66,23 +61,16 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpPost]
         [Route("{studentId}/BooksRead")]
-       
         public IActionResult AddBookRead(int studentId, BookReadModel bookReadModel)
         {
-            
-            
-                BookRead bookRead = new BookRead
-                {
-                    BookId = bookReadModel.BookId,
-                    DateRead = bookReadModel.DateRead,
-                    CreatedBy = "Kalyan",
-                    CreatedDate = DateTime.Now
-                };
-                studentService.AddBookRead(studentId, bookRead);
-               
-                return Ok();
+            BookRead bookRead = new BookRead
+            {
+                BookId = bookReadModel.BookId,
+                DateRead = bookReadModel.DateRead,
+            };
+            studentService.AddBookRead(studentId, bookRead);
 
-
+            return Ok();
         }
 
         [HttpDelete]

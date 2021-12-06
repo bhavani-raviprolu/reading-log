@@ -27,11 +27,6 @@ namespace MySchool.ReadingLog.API.Controllers
         public void AddBook(BookModel bookModel)
         {
             var book = _mapper.Map<Book>(bookModel);
-            book.CreatedBy = "Kalyan";
-            book.CreatedDate = System.DateTime.Now;
-            book.ModifiedBy = "Kalyan";
-            book.ModifiedDate = System.DateTime.Now;
-
             booksService.AddBook(book);
         }
 

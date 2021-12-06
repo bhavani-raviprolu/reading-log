@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,7 +12,6 @@ namespace MySchool.ReadingLog.API.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-
         [HttpGet]
         [Route("Login")]
         public async Task Login()
@@ -27,7 +24,6 @@ namespace MySchool.ReadingLog.API.Controllers
 
         [HttpGet]
         [Route("signin-google")]
-
         public async Task<IActionResult> GoogleResponse()
         {
             var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
@@ -49,6 +45,5 @@ namespace MySchool.ReadingLog.API.Controllers
             await HttpContext.SignOutAsync();
             return Ok();
         }
-
     }
 }
