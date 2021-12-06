@@ -7,9 +7,7 @@ using System.Collections.Generic;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class StudentsController : ControllerBase
+    public class StudentsController : BaseController
     {
         private readonly IStudentService studentService;
 

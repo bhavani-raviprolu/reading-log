@@ -39,7 +39,6 @@ namespace MySchool.ReadingLog.API
                 var section = Configuration.GetSection("Authentication:Google");
                 options.ClientId = section["ClientId"];
                 options.ClientSecret = section["ClientSecret"];
-                options.CallbackPath = "/api/login/signin-google";
             });
 
             services.AddHttpContextAccessor();

@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class LoginController : ControllerBase
+    public class LoginController : BaseController
     {
         [HttpGet]
         [Route("Login")]
