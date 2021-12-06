@@ -39,7 +39,6 @@ namespace MySchool.ReadingLog.API.Controllers
         [Authorize]
         public IActionResult GetBooks()
         {
-            var user = this.User;
             var books = booksService.GetBooks();
             var bookModels = _mapper.Map<List<BookModel>>(books);
 

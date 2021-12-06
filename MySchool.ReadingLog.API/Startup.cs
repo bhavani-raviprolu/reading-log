@@ -49,6 +49,15 @@ namespace MySchool.ReadingLog.API
             services.AddScoped<IBookRepository, BookRepository>();
 
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Description = "Reading Log API",
+                    Title = "Reading Log API",
+                    Version = "v1"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,6 +73,12 @@ namespace MySchool.ReadingLog.API
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
 
             app.UseEndpoints(endpoints =>
             {
