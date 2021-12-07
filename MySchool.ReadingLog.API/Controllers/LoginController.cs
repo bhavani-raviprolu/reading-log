@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
+    [Route("api/[controller]")]
     public class LoginController : BaseController
     {
         [HttpGet]
-        [Route("Login")]
         public async Task Login()
         {
             await HttpContext.ChallengeAsync(GoogleDefaults.AuthenticationScheme, new AuthenticationProperties()
@@ -34,6 +34,13 @@ namespace MySchool.ReadingLog.API.Controllers
                     claim.Value
                 });
             return Ok(claims);
+        }
+
+        [HttpGet]
+        [Route("AccessDenied")]
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return new ForbidResult();
         }
 
         [HttpPost]

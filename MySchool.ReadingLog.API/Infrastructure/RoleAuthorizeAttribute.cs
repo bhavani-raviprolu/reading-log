@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using MySchool.ReadingLog.API.Extensions;
 using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services.Interfaces;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.API.Infrastructure
 {
-    public class RoleAuthorizeAttribute : ActionFilterAttribute, IAsyncAuthorizationFilter
+    public class RoleAuthorizeAttribute : AuthorizeAttribute, IAsyncAuthorizationFilter
     {
         private readonly Role _requiredRole;
 
@@ -16,21 +17,21 @@ namespace MySchool.ReadingLog.API.Infrastructure
             this._requiredRole = requiredRole;
         }
 
-        public Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var email = context.HttpContext.GetEmail();
 
             var service = context.HttpContext.RequestServices.GetService(typeof(IUserService)) as IUserService;
 
-            var user = service.Get(email).Result;
+            var user = await service.Get(email);
 
             if (user == null || !user.Role.HasFlag(_requiredRole))
             {
-                context.HttpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return context.HttpContext.Response.CompleteAsync();
+                context.Result = new ForbidResult();
+                return;
             }
 
-            return Task.CompletedTask;
+            return;
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
+    [Route("api/[controller]")]
     public class BooksController : BaseController
     {
         private readonly IBooksService booksService;

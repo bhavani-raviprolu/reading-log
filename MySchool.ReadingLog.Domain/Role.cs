@@ -5,7 +5,7 @@ namespace MySchool.ReadingLog.Domain
     [Flags]
     public enum Role
     {
-        Admin = 0,
-        Parent = 1
+        Admin = 1,
+        Parent = 2
     }
 }

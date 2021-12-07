@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
+    [Route("api/[controller]")]
     public class UsersController : BaseController
     {
         private readonly IUserService _service;
@@ -32,9 +33,9 @@ namespace MySchool.ReadingLog.API.Controllers
         [HttpPut]
         [Route("{id}")]
         [RoleAuthorize(Role.Admin)]
-        public async Task<ActionResult<UserModel>> Update(int id, Role role)
+        public async Task<ActionResult<UserModel>> Update(int id, UpdateUserModel user)
         {
-            var result = await _service.Update(id, role);
+            var result = await _service.Update(id, user.Role);
             return Ok(_mapper.Map<UserModel>(result));
         }
 

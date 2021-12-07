@@ -28,7 +28,6 @@ namespace MySchool.ReadingLog.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddIdentity<IdentityUser, IdentityRole>();
             services.AddControllers()
                 .AddNewtonsoftJson(x =>
                 {
@@ -41,12 +40,16 @@ namespace MySchool.ReadingLog.API
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddCookie()
+            .AddCookie(options =>
+            {
+                options.AccessDeniedPath = "/api/login/AccessDenied";
+            })
             .AddGoogle(GoogleDefaults.AuthenticationScheme, options =>
             {
                 var section = Configuration.GetSection("Authentication:Google");
                 options.ClientId = section["ClientId"];
                 options.ClientSecret = section["ClientSecret"];
+                options.CallbackPath = "/api/login/signin-google";
             });
 
             services.AddHttpContextAccessor();
@@ -81,11 +84,13 @@ namespace MySchool.ReadingLog.API
             }
 
             app.UseHttpsRedirection();
-            app.UseRouting();
+            app.UseCors();
             app.UseAuthentication();
-
+            
+            app.UseRouting();
             app.UseAuthorization();
 
+            
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
