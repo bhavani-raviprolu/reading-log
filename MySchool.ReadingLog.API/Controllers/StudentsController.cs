@@ -5,6 +5,7 @@ using MySchool.ReadingLog.API.Models;
 using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.API.Controllers
 {
@@ -12,13 +13,15 @@ namespace MySchool.ReadingLog.API.Controllers
     public class StudentsController : BaseController
     {
         private readonly IStudentService studentService;
+        private readonly IUserService userService;
 
         private readonly IMapper _mapper;
 
-        public StudentsController(IStudentService studentService, IMapper mapper)
+        public StudentsController(IStudentService studentService, IMapper mapper, IUserService userService)
         {
             this.studentService = studentService;
             this._mapper = mapper;
+            this.userService = userService;
         }
 
         [HttpPost]
@@ -63,13 +66,15 @@ namespace MySchool.ReadingLog.API.Controllers
         [HttpPost]
         [Route("{studentId}/BooksRead")]
         [RoleAuthorize(Role.Parent)]
-        public IActionResult AddBookRead(int studentId, BookReadModel bookReadModel)
+        public async Task<IActionResult> AddBookRead(int studentId, BookReadModel bookReadModel)
         {
-            BookRead bookRead = new BookRead
+            if (!await userService.IsAllowed(this.GetMail(), studentId))
             {
-                BookId = bookReadModel.BookId,
-                DateRead = bookReadModel.DateRead,
-            };
+                return new ForbidResult();
+            }
+
+            var bookRead = _mapper.Map<BookRead>(bookReadModel);
+
             studentService.AddBookRead(studentId, bookRead);
 
             return Ok();

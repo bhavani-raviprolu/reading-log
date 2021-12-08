@@ -3,6 +3,7 @@ using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace MySchool.ReadingLog.Services.Implementations
 {
@@ -43,6 +44,12 @@ namespace MySchool.ReadingLog.Services.Implementations
         public async Task<User> Get(string mailId)
         {
             return await _repository.Get(mailId);
+        }
+
+        public async Task<bool> IsAllowed(string mailId, int studentId)
+        {
+            var user = await this.Get(mailId);
+            return user.Students.Any(c => c.Id == studentId);
         }
     }
 }

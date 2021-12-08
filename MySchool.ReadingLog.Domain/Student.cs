@@ -7,5 +7,7 @@ namespace MySchool.ReadingLog.Domain
         public string StudentName { get; set; }
         public string Grade { get; set; }
         public List<BookRead> BooksRead { get; set; }
+
+        public string ParentEmailId { get; set; }
     }
 }

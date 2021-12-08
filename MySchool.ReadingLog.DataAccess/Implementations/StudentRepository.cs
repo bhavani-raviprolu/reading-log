@@ -17,7 +17,17 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
 
         public void AddStudent(Student student)
         {
-            readingLogDbContext.Students.Add(student);
+            var parent = readingLogDbContext.Users
+                .Include(c => c.Students)
+                .FirstOrDefault(c => c.EmailAddress.ToLower().Equals(student.ParentEmailId));
+
+            if (parent == null)
+            {
+                throw new KeyNotFoundException($"Parent with {student.ParentEmailId} not found.")
+            }
+
+            parent.Students.Add(student);
+
             readingLogDbContext.SaveChanges();
         }
 
@@ -51,6 +61,9 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
         public void UpdateStudent(int studentId, Student student)
         {
             var current = readingLogDbContext.Students.Find(student.Id);
+
+            current.StudentName = student.StudentName;
+            current.Grade = student.Grade;
 
             readingLogDbContext.SaveChanges();
         }

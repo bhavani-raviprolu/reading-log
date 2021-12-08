@@ -9,7 +9,6 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
     {
         private readonly ReadingLogDbContext readingLogDbContext;
 
-
         public BookRepository(ReadingLogDbContext readingLogDbContext)
         {
             this.readingLogDbContext = readingLogDbContext;
@@ -34,6 +33,12 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
         public void UpdateBook(int bookId, Book book)
         {
             var current = readingLogDbContext.Books.Find(book.Id);
+
+            if (current == null)
+            {
+                throw new KeyNotFoundException($"Book with Id {bookId} not found.");
+            }
+
             current.BookName = book.BookName;
             readingLogDbContext.SaveChanges();
         }
@@ -41,6 +46,12 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
         public void DeleteBook(int bookId)
         {
             var current = readingLogDbContext.Books.Find(bookId);
+
+            if (current == null)
+            {
+                throw new KeyNotFoundException($"Book with Id {bookId} not found.");
+            }
+
             readingLogDbContext.Books.Remove(current);
             readingLogDbContext.SaveChanges();
         }

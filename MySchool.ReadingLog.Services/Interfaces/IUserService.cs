@@ -17,5 +17,7 @@ namespace MySchool.ReadingLog.Services.Interfaces
         Task<IList<User>> Get();
 
         Task<User> Get(string mailId);
+
+        Task<bool> IsAllowed(string mailId, int studentId);
     }
 }

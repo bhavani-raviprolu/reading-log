@@ -9,6 +9,6 @@ namespace MySchool.ReadingLog.Domain
         public string EmailAddress { get; set; }
         public Role Role { get; set; }
 
-        public IList<Student> Students { get; set; }
+        public IList<Student> Students { get; set; } = new List<Student>();
     }
 }
