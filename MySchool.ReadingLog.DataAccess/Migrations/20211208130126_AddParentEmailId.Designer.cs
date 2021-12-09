@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MySchool.ReadingLog.DataAccess;
 
 namespace MySchool.ReadingLog.DataAccess.Migrations
 {
     [DbContext(typeof(ReadingLogDbContext))]
-    partial class ReadingLogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211208130126_AddParentEmailId")]
+    partial class AddParentEmailId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
