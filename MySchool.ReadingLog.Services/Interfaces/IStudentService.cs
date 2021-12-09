@@ -1,21 +1,22 @@
 ﻿using MySchool.ReadingLog.Domain;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.Services.Interfaces
 {
     public interface IStudentService
     {
-        void AddBookRead(int studentId, BookRead bookRead);
+        Task AddBookReadAsync(int studentId, BookRead bookRead);
 
-        void AddStudent(Student student);
+        Task AddStudentAsync(Student student);
 
-        List<BookRead> GetBookRead(int studentId);
+       // Task<List<BookRead>> GetBookReadAsync(int studentId);
 
-        List<Student> GetStudents();
+        Task<List<Student>> GetStudentsAsync();
 
-        Student GetStudent(int studentId);
+        Task<Student> GetStudentAsync(int studentId);
 
-        void UpdateStudent(int studentId, Student student);
-        void DeleteStudent(int studentId);
+        Task UpdateStudentAsync(int studentId, Student student);
+        Task DeleteStudentAsync(int studentId);
     }
 }

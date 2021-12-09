@@ -26,7 +26,7 @@ namespace MySchool.ReadingLog.API.Controllers
         public async Task<ActionResult<UserModel>> Add(AddUserModel model)
         {
             var user = _mapper.Map<User>(model);
-            var result = await _service.Add(user);
+            var result = await _service.AddAsync(user);
             return Ok(_mapper.Map<UserModel>(result));
         }
 
@@ -35,7 +35,7 @@ namespace MySchool.ReadingLog.API.Controllers
         [RoleAuthorize(Role.Admin)]
         public async Task<ActionResult<UserModel>> Update(int id, UpdateUserModel user)
         {
-            var result = await _service.Update(id, user.Role);
+            var result = await _service.UpdateAsync(id, user.Role);
             return Ok(_mapper.Map<UserModel>(result));
         }
 
@@ -43,7 +43,7 @@ namespace MySchool.ReadingLog.API.Controllers
         [RoleAuthorize(Role.Admin)]
         public async Task<ActionResult<IList<UserModel>>> Get()
         {
-            var result = await _service.Get();
+            var result = await _service.GetAsync();
             return Ok(_mapper.Map<IList<UserModel>>(result));
         }
 
@@ -52,7 +52,7 @@ namespace MySchool.ReadingLog.API.Controllers
         [RoleAuthorize(Role.Admin | Role.Parent)]
         public async Task<ActionResult<UserModel>> Get(int id)
         {
-            var result = await _service.Get(id);
+            var result = await _service.GetAsync(id);
             return Ok(_mapper.Map<UserModel>(result));
         }
 
@@ -61,7 +61,7 @@ namespace MySchool.ReadingLog.API.Controllers
         [RoleAuthorize(Role.Admin)]
         public async Task<ActionResult> Delete(int id)
         {
-            await _service.Delete(id);
+            await _service.DeleteAsync(id);
             return Ok();
         }
     }

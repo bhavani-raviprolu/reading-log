@@ -23,12 +23,17 @@ namespace MySchool.ReadingLog.API.Infrastructure
 
             var service = context.HttpContext.RequestServices.GetService(typeof(IUserService)) as IUserService;
 
-            var user = await service.Get(email);
+            var user = await service.GetAsync(email);
 
             if (user == null || !user.Role.HasFlag(_requiredRole))
             {
                 context.Result = new ForbidResult();
                 return;
+            }
+
+            if(user.Role.HasFlag(_requiredRole))
+            {
+
             }
 
             return;

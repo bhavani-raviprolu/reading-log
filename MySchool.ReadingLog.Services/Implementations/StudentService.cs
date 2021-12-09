@@ -2,50 +2,47 @@
 using MySchool.ReadingLog.Domain;
 using MySchool.ReadingLog.Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.Services.Implementations
 {
     public class StudentService : IStudentService
     {
-        private readonly IStudentRepository studentRepository;
+        private readonly IStudentRepository _studentRepository;
 
         public StudentService(IStudentRepository studentRepository)
         {
-            this.studentRepository = studentRepository;
+           _studentRepository = studentRepository;
         }
 
-        public void AddStudent(Student student)
+        public async Task AddStudentAsync(Student student)
         {
-            studentRepository.AddStudent(student);
+            await _studentRepository.AddStudentAsync(student);
         }
 
-        public List<Student> GetStudents()
+        public async Task<List<Student>> GetStudentsAsync()
         {
-            return studentRepository.GetStudents();
+            return await _studentRepository.GetStudentsAsync();
         }
 
-        public void AddBookRead(int studentId, BookRead bookRead)
+        public async Task AddBookReadAsync(int studentId, BookRead bookRead)
         {
-            studentRepository.AddBookRead(studentId, bookRead);
+            await _studentRepository.AddBookReadAsync(studentId, bookRead);
         }
 
-        public List<BookRead> GetBookRead(int studentId)
+       
+        public async Task<Student> GetStudentAsync(int studentId)
         {
-            return null;
+            return await _studentRepository.GetStudentAsync(studentId);
         }
 
-        public Student GetStudent(int studentId)
+        public async Task UpdateStudentAsync(int studentId, Student student)
         {
-            return studentRepository.GetStudent(studentId);
+            await _studentRepository.UpdateStudentAsync(studentId, student);
         }
-
-        public void UpdateStudent(int studentId, Student student)
+        public async Task DeleteStudentAsync(int studentId)
         {
-            studentRepository.UpdateStudent(studentId, student);
-        }
-        public void DeleteStudent(int studentId)
-        {
-            studentRepository.DeleteStudent(studentId);
+            await _studentRepository.DeleteStudentAsync(studentId);
         }
     }
 }

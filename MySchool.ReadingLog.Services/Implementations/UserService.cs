@@ -16,39 +16,39 @@ namespace MySchool.ReadingLog.Services.Implementations
             _repository = repository;
         }
 
-        public async Task<User> Add(User user)
+        public async Task<User> AddAsync(User user)
         {
             return await _repository.Add(user);
         }
 
-        public async Task Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             await _repository.Delete(id);
         }
 
-        public async Task<User> Get(int id)
+        public async Task<User> GetAsync(int id)
         {
             return await _repository.Get(id);
         }
 
-        public async Task<IList<User>> Get()
+        public async Task<IList<User>> GetAsync()
         {
             return await _repository.Get();
         }
 
-        public async Task<User> Update(int id, Role role)
+        public async Task<User> UpdateAsync(int id, Role role)
         {
             return await _repository.Update(id, role);
         }
 
-        public async Task<User> Get(string mailId)
+        public async Task<User> GetAsync(string mailId)
         {
             return await _repository.Get(mailId);
         }
 
-        public async Task<bool> IsAllowed(string mailId, int studentId)
+        public async Task<bool> IsAllowedAsync(string mailId, int studentId)
         {
-            var user = await this.Get(mailId);
+            var user = await this.GetAsync(mailId);
             return user.Students.Any(c => c.Id == studentId);
         }
     }

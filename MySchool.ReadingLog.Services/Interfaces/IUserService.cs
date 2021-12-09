@@ -6,18 +6,18 @@ namespace MySchool.ReadingLog.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<User> Add(User user);
+        Task<User> AddAsync(User user);
 
-        Task<User> Update(int id, Role role);
+        Task<User> UpdateAsync(int id, Role role);
 
-        Task Delete(int id);
+        Task DeleteAsync(int id);
 
-        Task<User> Get(int id);
+        Task<User> GetAsync(int id);
 
-        Task<IList<User>> Get();
+        Task<IList<User>> GetAsync();
 
-        Task<User> Get(string mailId);
+        Task<User> GetAsync(string mailId);
 
-        Task<bool> IsAllowed(string mailId, int studentId);
+        Task<bool> IsAllowedAsync(string mailId, int studentId);
     }
 }

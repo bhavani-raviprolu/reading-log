@@ -12,54 +12,52 @@ namespace MySchool.ReadingLog.API.Controllers
     [Route("api/[controller]")]
     public class StudentsController : BaseController
     {
-        private readonly IStudentService studentService;
-        private readonly IUserService userService;
+        private readonly IStudentService _studentService;
+        private readonly IUserService _userService;
 
         private readonly IMapper _mapper;
 
         public StudentsController(IStudentService studentService, IMapper mapper, IUserService userService)
         {
-            this.studentService = studentService;
+            this._studentService = studentService;
             this._mapper = mapper;
-            this.userService = userService;
+            this._userService = userService;
         }
 
         [HttpPost]
         [RoleAuthorize(Role.Admin)]
-        public IActionResult AddStudent(StudentModel studentModel)
+        public async Task<IActionResult> AddStudent(StudentModel studentModel)
         {
             var student = _mapper.Map<Student>(studentModel);
 
-            studentService.AddStudent(student);
+            await _studentService.AddStudentAsync(student);
             return Ok();
         }
 
-        [HttpGet]
-        public IActionResult GetStudents()
+        [HttpGet] 
+        [RoleAuthorize(Role.Admin)]
+        public async Task<IActionResult> GetStudents()
         {
-            var students = studentService.GetStudents();
-            var studentsModel = _mapper.Map<List<StudentModel>>(students);
-
-            return Ok(studentsModel);
+            var students = await _studentService.GetStudentsAsync();
+           
+            return Ok(_mapper.Map<List<StudentModel>>(students));
         }
 
         [HttpGet]
         [Route("{studentId}")]
         [RoleAuthorize(Role.Admin | Role.Parent)]
-        public IActionResult GetStudent(int studentId)
+        public async Task<IActionResult> GetStudent(int studentId)
         {
-            var student = studentService.GetStudent(studentId);
+            var student = await _studentService.GetStudentAsync(studentId);
 
-            var studentModel = _mapper.Map<StudentModel>(student);
-
-            return Ok(studentModel);
+           return Ok(_mapper.Map<StudentModel>(student));
         }
 
         [HttpPut]
         [RoleAuthorize(Role.Admin)]
-        public IActionResult UpdateStudent(int studentId, Student student)
+        public async Task<IActionResult> UpdateStudent(int studentId, Student student)
         {
-            studentService.UpdateStudent(studentId, student);
+            await _studentService.UpdateStudentAsync(studentId, student);
             return Ok();
         }
 
@@ -68,14 +66,14 @@ namespace MySchool.ReadingLog.API.Controllers
         [RoleAuthorize(Role.Parent)]
         public async Task<IActionResult> AddBookRead(int studentId, BookReadModel bookReadModel)
         {
-            if (!await userService.IsAllowed(this.GetMail(), studentId))
+            if (!await _userService.IsAllowedAsync(this.GetMail(), studentId))
             {
                 return new ForbidResult();
             }
 
             var bookRead = _mapper.Map<BookRead>(bookReadModel);
 
-            studentService.AddBookRead(studentId, bookRead);
+            await _studentService.AddBookReadAsync(studentId, bookRead);
 
             return Ok();
         }
@@ -83,9 +81,9 @@ namespace MySchool.ReadingLog.API.Controllers
         [HttpDelete]
         [Route("{studentId}")]
         [RoleAuthorize(Role.Admin)]
-        public IActionResult DeleteStudent(int studentId)
+        public async Task<IActionResult> DeleteStudent(int studentId)
         {
-            studentService.DeleteStudent(studentId);
+            await _studentService.DeleteStudentAsync(studentId);
             return Ok();
         }
     }

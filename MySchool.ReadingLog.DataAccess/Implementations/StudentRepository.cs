@@ -3,6 +3,7 @@ using MySchool.ReadingLog.DataAccess.Interfaces;
 using MySchool.ReadingLog.Domain;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace MySchool.ReadingLog.DataAccess.Implementations
 {
@@ -15,7 +16,7 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
             readingLogDbContext = context;
         }
 
-        public void AddStudent(Student student)
+        public async Task AddStudentAsync(Student student)
         {
             var parent = readingLogDbContext.Users
                 .Include(c => c.Students)
@@ -23,56 +24,53 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
 
             if (parent == null)
             {
-                throw new KeyNotFoundException($"Parent with {student.ParentEmailId} not found.")
+                throw new KeyNotFoundException($"Parent with {student.ParentEmailId} not found.");
             }
 
             parent.Students.Add(student);
 
-            readingLogDbContext.SaveChanges();
+            await readingLogDbContext.SaveChangesAsync();
         }
 
-        public List<Student> GetStudents()
+        public async Task<List<Student>> GetStudentsAsync()
         {
-            return readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x => x.Book).ToList();
+            return await readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x => x.Book).ToListAsync();
         }
 
-        public void AddBookRead(int studentId, BookRead bookRead)
+        public async Task AddBookReadAsync(int studentId, BookRead bookRead)
         {
-            var student = readingLogDbContext.Students.Find(studentId);
+            var student = await readingLogDbContext.Students.FindAsync(studentId);
             if (student.BooksRead == null)
             {
                 student.BooksRead = new List<BookRead>();
             }
             student.BooksRead.Add(bookRead);
             readingLogDbContext.Students.Update(student);
-            readingLogDbContext.SaveChanges();
+            await readingLogDbContext.SaveChangesAsync();
         }
 
-        public Student GetStudent(int studentId)
+        public async Task<Student> GetStudentAsync(int studentId)
         {
-            return readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x => x.Book).First(x => x.Id == studentId);
+            return await readingLogDbContext.Students.Include(x => x.BooksRead).ThenInclude(x => x.Book).FirstAsync(x => x.Id == studentId);
         }
 
-        public List<BookRead> GetBookRead(int studentId)
-        {
-            return null;
-        }
+        
 
-        public void UpdateStudent(int studentId, Student student)
+        public async Task UpdateStudentAsync(int studentId, Student student)
         {
             var current = readingLogDbContext.Students.Find(student.Id);
 
             current.StudentName = student.StudentName;
             current.Grade = student.Grade;
 
-            readingLogDbContext.SaveChanges();
+            await readingLogDbContext.SaveChangesAsync();
         }
 
-        public void DeleteStudent(int studentId)
+        public async Task DeleteStudentAsync(int studentId)
         {
             var current = readingLogDbContext.Students.Find(studentId);
             readingLogDbContext.Students.Remove(current);
-            readingLogDbContext.SaveChanges();
+            await readingLogDbContext.SaveChangesAsync();
         }
     }
 }
