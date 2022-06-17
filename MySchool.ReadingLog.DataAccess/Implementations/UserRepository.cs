@@ -76,7 +76,9 @@ namespace MySchool.ReadingLog.DataAccess.Implementations
 
         public async Task<User> Get(string mailId)
         {
-            return await this.context.Users.FirstOrDefaultAsync(c => c.EmailAddress.ToLower().Equals(mailId.ToLower()));
+            return await this.context.Users
+                .Include(c=>c.Students)
+                .FirstOrDefaultAsync(c => c.EmailAddress.ToLower().Equals(mailId.ToLower()));
         }
     }
 }

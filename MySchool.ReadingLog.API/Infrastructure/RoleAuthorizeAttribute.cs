@@ -25,16 +25,13 @@ namespace MySchool.ReadingLog.API.Infrastructure
 
             var user = await service.GetAsync(email);
 
-            if (user == null || !user.Role.HasFlag(_requiredRole))
+            if (user == null || (user.Role & _requiredRole) == Role.None)
             {
                 context.Result = new ForbidResult();
                 return;
             }
 
-            if(user.Role.HasFlag(_requiredRole))
-            {
-
-            }
+           
 
             return;
         }

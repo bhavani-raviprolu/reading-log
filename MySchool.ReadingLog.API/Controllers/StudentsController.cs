@@ -48,9 +48,14 @@ namespace MySchool.ReadingLog.API.Controllers
         [RoleAuthorize(Role.Admin | Role.Parent)]
         public async Task<IActionResult> GetStudent(int studentId)
         {
-            var student = await _studentService.GetStudentAsync(studentId);
 
-           return Ok(_mapper.Map<StudentModel>(student));
+            if (!await _userService.IsAllowedAsync(this.GetMail(), studentId))
+            {
+                return new ForbidResult();
+            }
+
+            var student = await _studentService.GetStudentAsync(studentId);
+            return Ok(_mapper.Map<StudentModel>(student));
         }
 
         [HttpPut]

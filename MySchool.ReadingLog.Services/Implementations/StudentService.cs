@@ -44,5 +44,6 @@ namespace MySchool.ReadingLog.Services.Implementations
         {
             await _studentRepository.DeleteStudentAsync(studentId);
         }
+                
     }
 }

@@ -49,6 +49,12 @@ namespace MySchool.ReadingLog.Services.Implementations
         public async Task<bool> IsAllowedAsync(string mailId, int studentId)
         {
             var user = await this.GetAsync(mailId);
+
+            if(user.Role.HasFlag(Role.Admin))
+            {
+                return true;
+            }
+
             return user.Students.Any(c => c.Id == studentId);
         }
     }
