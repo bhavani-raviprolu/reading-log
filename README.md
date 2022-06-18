@@ -10,7 +10,7 @@ application are
 
 This application has been built on the following tech stack
 
-* .NET Core 3.1
+* .NET 5.0
 * Entity Framework Core
 * MS SQL Express
 * AutoMapper
